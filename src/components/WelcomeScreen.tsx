@@ -1,21 +1,28 @@
-import WebApp from "@twa-dev/sdk";
-
 interface WelcomeScreenProps {
   onStart: () => void;
 }
 
+interface TelegramWebApp {
+  WebApp: {
+    openTelegramLink: (url: string) => void;
+  };
+}
+
+declare global {
+  interface Window {
+    Telegram?: TelegramWebApp;
+  }
+}
+
 export function WelcomeScreen({ onStart }: WelcomeScreenProps) {
   const handleShare = () => {
-    const shareData = {
-      title: "Tasbeh Counter",
-      text: "Check out this amazing Tasbeh Counter app!",
-      url: window.location.href,
-    };
+    const botUsername = "tasbehCounter_bot"; // replace with your actual bot username
+    const shareUrl = `https://t.me/${botUsername}?start`;
 
-    if (navigator.share) {
-      navigator.share(shareData).catch(console.error);
+    if (window.Telegram?.WebApp) {
+      window.Telegram.WebApp.openTelegramLink(shareUrl);
     } else {
-      WebApp.showAlert("Please share this link: " + window.location.href);
+      window.open(shareUrl, "_blank");
     }
   };
 

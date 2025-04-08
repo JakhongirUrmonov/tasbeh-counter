@@ -15,14 +15,35 @@ declare global {
 }
 
 export function WelcomeScreen({ onStart }: WelcomeScreenProps) {
-  const handleShare = () => {
-    const botUsername = "tasbehCounter_bot"; // replace with your actual bot username
-    const shareUrl = `https://t.me/${botUsername}?start`;
+  const shareProgress = async () => {
+    const tgUser = window?.Telegram?.WebApp.initDataUnsafe?.user;
 
-    if (window.Telegram?.WebApp) {
-      window.Telegram.WebApp.openTelegramLink(shareUrl);
-    } else {
-      window.open(shareUrl, "_blank");
+    if (!tgUser) {
+      alert("Telegram user info not found.");
+      return;
+    }
+
+    const zikrCount = localStorage.getItem("tasbehCount"); // from your state
+    const username = tgUser.username || "User";
+
+    try {
+      await fetch(`${import.meta.env.VITE_API_URL}/api/share-progress`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          telegramId: tgUser.id,
+          username,
+          zikrCount,
+        }),
+      });
+
+      Telegram?.WebApp.showPopup({
+        message: "Shared successfully in your chat!",
+      });
+    } catch (err) {
+      Telegram?.WebApp.showPopup({
+        message: "Failed to share your progress 😔",
+      });
     }
   };
 
@@ -41,7 +62,7 @@ export function WelcomeScreen({ onStart }: WelcomeScreenProps) {
             Start Counting
           </button>
 
-          <button onClick={handleShare} className="btn btn-secondary w-full">
+          <button onClick={shareProgress} className="btn btn-secondary w-full">
             Share with Friends
           </button>
         </div>

@@ -1,10 +1,17 @@
-interface WelcomeScreenProps {
-  onStart: () => void;
-}
+// interface WelcomeScreenProps {
+//   onStart: () => void;
+// }
 
 interface TelegramWebApp {
   WebApp: {
     openTelegramLink: (url: string) => void;
+    showPopup?: (options: { message: string }) => void;
+    initDataUnsafe?: {
+      user?: {
+        id: number;
+        username?: string;
+      };
+    };
   };
 }
 
@@ -14,7 +21,7 @@ declare global {
   }
 }
 
-export function WelcomeScreen({ onStart }: WelcomeScreenProps) {
+export function WelcomeScreen() {
   const shareProgress = async () => {
     const tgUser = window?.Telegram?.WebApp.initDataUnsafe?.user;
 
@@ -37,12 +44,12 @@ export function WelcomeScreen({ onStart }: WelcomeScreenProps) {
         }),
       });
 
-      Telegram?.WebApp.showPopup({
+      window?.Telegram?.WebApp?.showPopup?.({
         message: "Shared successfully in your chat!",
       });
     } catch (err) {
-      Telegram?.WebApp.showPopup({
-        message: "Failed to share your progress 😔",
+      window?.Telegram?.WebApp?.showPopup?.({
+        message: "Failed to share your progress 😔: " + err,
       });
     }
   };
@@ -58,9 +65,7 @@ export function WelcomeScreen({ onStart }: WelcomeScreenProps) {
         </p>
 
         <div className="space-y-4">
-          <button onClick={onStart} className="btn btn-primary w-full">
-            Start Counting
-          </button>
+          <button className="btn btn-primary w-full">Start Counting</button>
 
           <button onClick={shareProgress} className="btn btn-secondary w-full">
             Share with Friends

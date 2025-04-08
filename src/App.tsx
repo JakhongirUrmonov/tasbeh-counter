@@ -11,17 +11,17 @@ import { Dhikr } from "./types/dhikr";
 import "./index.css";
 
 function App() {
-  const [hasStarted, setHasStarted] = useState(() => {
-    const saved = localStorage.getItem("hasStarted");
-    return saved ? JSON.parse(saved) : false;
-  });
-  const [activeTab, setActiveTab] = useState("counter");
+  // const [hasStarted, setHasStarted] = useState(() => {
+  //   const saved = localStorage.getItem("hasStarted");
+  //   return saved ? JSON.parse(saved) : false;
+  // });
+  const [activeTab, setActiveTab] = useState("home");
   const [selectedDhikr, setSelectedDhikr] = useState<Dhikr | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    localStorage.setItem("hasStarted", JSON.stringify(hasStarted));
-  }, [hasStarted]);
+  // useEffect(() => {
+  //   localStorage.setItem("hasStarted", JSON.stringify(hasStarted));
+  // }, [hasStarted]);
 
   useEffect(() => {
     WebApp.ready();
@@ -33,12 +33,14 @@ function App() {
     setTimeout(() => setError(null), 5000);
   };
 
-  if (!hasStarted) {
-    return <WelcomeScreen onStart={() => setHasStarted(true)} />;
-  }
+  // if (!hasStarted) {
+  //   return <WelcomeScreen onStart={() => setHasStarted(true)} />;
+  // }
 
   const renderContent = () => {
     switch (activeTab) {
+      case "home":
+        return <WelcomeScreen />;
       case "counter":
         return (
           <>

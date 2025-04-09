@@ -34,7 +34,7 @@ export function WelcomeScreen() {
     const username = tgUser.username || "User";
 
     try {
-      await fetch(`${import.meta.env.VITE_API_URL}/api/share`, {
+      await fetch(`${import.meta.env.VITE_API_URL}/share/user`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -68,7 +68,7 @@ export function WelcomeScreen() {
           <button className="btn btn-primary w-full">Start Counting</button>
 
           <button onClick={shareProgress} className="btn btn-secondary w-full">
-            Share with Friends
+            Share with Friends1
           </button>
         </div>
 

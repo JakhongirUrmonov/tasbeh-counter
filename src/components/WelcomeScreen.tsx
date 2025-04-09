@@ -34,7 +34,7 @@ export function WelcomeScreen() {
     const username = tgUser.username || "User";
 
     try {
-      await fetch(`${import.meta.env.VITE_API_URL}/api/share-progress`, {
+      await fetch(`${import.meta.env.VITE_API_URL}/api/share`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

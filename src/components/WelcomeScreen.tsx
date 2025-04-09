@@ -34,7 +34,7 @@ export function WelcomeScreen() {
     const username = tgUser.username || "User";
 
     try {
-      await fetch(`${import.meta.env.VITE_API_URL}/share/user`, {
+      await fetch(`https://b8b9-109-81-169-164.ngrok-free.app/share/user`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
